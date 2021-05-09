@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>正则表达式（Regular expression） - 嘉嘉小站</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="嘉嘉小站"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="嘉嘉小站"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Python课上教到正则表达式，摸鱼摸狠了没听懂多少。自己跟着网上教程学了点基本语法，正好开个帖子记录一下以供以后查阅。以下内容根据RegexOne与Github的内容改写。 一个很好的的playground：regex101 字符正则表达式里的字符多数只能匹配他们本身。所有的字符和数字，都只能匹配自己，比如 1dog  就能匹配一个字符串，包含一个以’d’开头，’g’结尾，中间一个’o’的字符串"><meta property="og:type" content="blog"><meta property="og:title" content="正则表达式（Regular expression）"><meta property="og:url" content="http://leoljl.github.io/2021/05/09/regex/"><meta property="og:site_name" content="嘉嘉小站"><meta property="og:description" content="Python课上教到正则表达式，摸鱼摸狠了没听懂多少。自己跟着网上教程学了点基本语法，正好开个帖子记录一下以供以后查阅。以下内容根据RegexOne与Github的内容改写。 一个很好的的playground：regex101 字符正则表达式里的字符多数只能匹配他们本身。所有的字符和数字，都只能匹配自己，比如 1dog  就能匹配一个字符串，包含一个以’d’开头，’g’结尾，中间一个’o’的字符串"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://leoljl.github.io/img/og_image.png"><meta property="article:published_time" content="2021-05-09T09:54:24.000Z"><meta property="article:modified_time" content="2021-05-09T12:27:07.392Z"><meta property="article:author" content="Leo.L"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://leoljl.github.io/2021/05/09/regex/"},"headline":"正则表达式（Regular expression）","image":["http://leoljl.github.io/img/og_image.png"],"datePublished":"2021-05-09T09:54:24.000Z","dateModified":"2021-05-09T12:27:07.392Z","author":{"@type":"Person","name":"Leo.L"},"description":"Python课上教到正则表达式，摸鱼摸狠了没听懂多少。自己跟着网上教程学了点基本语法，正好开个帖子记录一下以供以后查阅。以下内容根据RegexOne与Github的内容改写。 一个很好的的playground：regex101 字符正则表达式里的字符多数只能匹配他们本身。所有的字符和数字，都只能匹配自己，比如 1dog  就能匹配一个字符串，包含一个以’d’开头，’g’结尾，中间一个’o’的字符串"}</script><link rel="canonical" href="http://leoljl.github.io/2021/05/09/regex/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar.png" alt="嘉嘉小站" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My Github" href="https://www.github.com/LeoLjl"><i class="fab fa-Github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal"><i class="fas fa-angle-double-right"></i>正则表达式（Regular expression）</h1><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><i class="far fa-calendar-alt"> </i><time dateTime="${date_xml(page.date)}" title="${date_xml(page.date)}">2021-05-09</time></span><span class="level-item is-hidden-mobile"><i class="far fa-calendar-check"> </i><time dateTime="${date_xml(page.updated)}" title="${date_xml(page.updated)}">2021-05-09</time></span></div></div><div class="content"><p>Python课上教到正则表达式，摸鱼摸狠了没听懂多少。自己跟着网上教程学了点基本语法，正好开个帖子记录一下以供以后查阅。以下内容根据<a target="_blank" rel="noopener" href="https://regexone.com/lesson/introduction_abcs">RegexOne</a>与<a target="_blank" rel="noopener" href="https://github.com/EZLippi/practical-programming-books/blob/master/src/30-minutes-to-learn-regex.md">Github</a>的内容改写。</p>
+<p>一个很好的的playground：<a target="_blank" rel="noopener" href="https://regex101.com/">regex101</a></p>
+<h2 id="字符"><a href="#字符" class="headerlink" title="字符"></a><strong>字符</strong></h2><p>正则表达式里的字符多数只能匹配他们本身。所有的字符和数字，都只能匹配自己，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dog</span><br></pre></td></tr></table></figure>
+
+<p>就能匹配一个字符串，包含一个以’d’开头，’g’结尾，中间一个’o’的字符串。</p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a><strong>练习</strong></h3><p>写出一个正则表达式，可以完成下表中的任务。所有的练习解法都不唯一。</p>
+<table>
+<thead>
+<tr>
+<th>目标</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>ab</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>abcd</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>abc</td>
+</tr>
+</tbody></table>
+<h3 id="样例解"><a href="#样例解" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab</span><br></pre></td></tr></table></figure>
+
+<h2 id="数字"><a href="#数字" class="headerlink" title="数字"></a><strong>数字</strong></h2><p>数字0-9可以用<code>\d</code>表示，其中<code>\</code>为转义字符。如果要在表达式中用到<code>\</code>，则需要再加上一个<code>\</code>，也就是<code>\\</code>。</p>
+<p>应当注意现在的表达式是与字符串中的<strong>任意位置</strong>匹配，而不是从第一个字符开始。</p>
+<h3 id="练习-1"><a href="#练习-1" class="headerlink" title="练习"></a><strong>练习</strong></h3><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>abc123xyz</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>define”123”</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>var g=123;</td>
+</tr>
+</tbody></table>
+<h3 id="样例解-1"><a href="#样例解-1" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">123</span><br></pre></td></tr></table></figure>
+
+<h2 id="点-“-”"><a href="#点-“-”" class="headerlink" title="点 “.”"></a><strong>点 “.”</strong></h2><p>在正则表达式中，. 表示任意一个字符（字母，数字，空格等等）。同理，如果要匹配句号，那么在它前面加上一个转义符：<strong>\.</strong></p>
+<p>例如，下面这个表达式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.t</span><br></pre></td></tr></table></figure>
+
+<p>表示匹配一个开头为”c”，结尾为”t”，中间字符任意的字符串，可以为”cat”, “cnt”, “c t”等等，但是它不能匹配”cnnt”, “ct”这种字符串。</p>
+<h3 id="练习-2"><a href="#练习-2" class="headerlink" title="练习"></a><strong>练习</strong></h3><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>cat.</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>896.</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>?=+.</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>abc1</td>
+</tr>
+</tbody></table>
+<h3 id="样例解-2"><a href="#样例解-2" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...\. or \.</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a><strong>字符类</strong></h2><h3 id="字符类-1"><a href="#字符类-1" class="headerlink" title="字符类"></a><strong>字符类</strong></h3><p>有时候 <strong>.</strong> 这个元字符适用的范围过大，我们需要缩小匹配的范围。比如说用于校验手机号时，我们不希望”abc-defg-hijk”是一组合法的输入。</p>
+<p>在<strong>方括号</strong>中的字符称作字符类，表示可以匹配其中的任意一组字符。比如说</p>
+<ul>
+<li>c[aeiou]t，表示匹配以c开头，t结尾，中间是aeiou中的任意<strong>一个</strong>字符的字符串。</li>
+<li>[0123456789]，表示匹配任意一个数字</li>
+</ul>
+<p>当需要匹配”[“与”]”本身时，在之前加上转义字符即可。字符类可以看成一个set，其中的元素顺序和个数都不重要。</p>
+<p>字符类内和字符类外的字符规则有时会不同，比如 . 表示匹配任意一个字符，[.]表示匹配一个全角句号。</p>
+<h3 id="字符类的范围"><a href="#字符类的范围" class="headerlink" title="字符类的范围"></a><strong>字符类的范围</strong></h3><p>有时候字符类中的符号很多，一一列举出来很麻烦，于是引入字符类的范围，用-表示。比如</p>
+<ul>
+<li>[a-z] 表示匹配从a到z的所有字符</li>
+<li>[0-9] 表示匹配所有的数字字符</li>
+<li>[0-9A-Fa-f] 表示匹配一个十六进制数字</li>
+<li>[a-zA-Z\-] 表示匹配所有字母或者短横线，注意在字符类中-需要加上转义符，在字符类外没有这个要求。</li>
+</ul>
+<h3 id="字符类的排除"><a href="#字符类的排除" class="headerlink" title="字符类的排除"></a><strong>字符类的排除</strong></h3><p>有时候从反面列举不需要的符号更加容易一些，这时候我们在方括号的开始处增加<strong>^</strong>. 比如</p>
+<ul>
+<li>[^a-z] 表示匹配不是小写字母的字符</li>
+<li>[^ \^abc]表示匹配不是^或a或b或c的字符</li>
+</ul>
+<h3 id="练习-3"><a href="#练习-3" class="headerlink" title="练习"></a><strong>练习</strong></h3><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>hog</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>bog</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>pog</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>dog</td>
+</tr>
+</tbody></table>
+<h3 id="样例解答"><a href="#样例解答" class="headerlink" title="样例解答"></a><strong>样例解答</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[^d]og</span><br></pre></td></tr></table></figure>
+
+<h2 id="转义字符类"><a href="#转义字符类" class="headerlink" title="转义字符类"></a><strong>转义字符类</strong></h2><p>有些常用的匹配范围可以用转移字符表示。</p>
+<ul>
+<li>\d 表示匹配数字字符，等价于[0-9]</li>
+<li>\w 表示匹配字母或数字或下划线，等价于[a-zA-Z0-9_]，常用于匹配英文文本</li>
+<li>\s 表示匹配一个空字符，空字符的定义包含空格，tab键，回车或者换行符</li>
+<li>\D 表示匹配不是数字的字符，等价于[^0-9] .</li>
+<li>\W 表示匹配不是字母也不是数字，字母和下划线的字符，等价于[^0-9a-zA-Z_]</li>
+<li>\S 表示匹配一个非空字符</li>
+</ul>
+<h3 id="练习-4"><a href="#练习-4" class="headerlink" title="练习"></a><strong>练习</strong></h3><p>匹配YYYY-MM-DD格式的字符，无需考虑月份和日期的合法性。</p>
+<h3 id="样例解-3"><a href="#样例解-3" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d\d\d\d-\d\d-\d\d</span><br></pre></td></tr></table></figure>
+
+<p>接下来的内容会讲述如何简化这个表达式。</p>
+<h2 id="重复"><a href="#重复" class="headerlink" title="重复"></a><strong>重复</strong></h2><p>在字符后，可以用大括号内数字表示重复。一个数字表示重复次数，两个用逗号隔开的数字表示重复字数的范围。比如</p>
+<ul>
+<li>a{3} 表示匹配含有三个连续的a的字符串，与aaa等价</li>
+<li>a{1, 3} 表示匹配含a但不连续出现超过三次的字符串，也就是匹配a或aa或aaa</li>
+<li>[xyz]{5} 表示匹配五个字符，每个字符可以是x, y, z中的任意一个，比如xxxyz</li>
+<li>.{2, 6} 表示匹配长度为2-6的任意字符串</li>
+</ul>
+<p>注意在字符类中，大括号没有特殊含义，[{}]表示匹配一个左大括号或者右大括号。a\{2\}表示匹配字符串”a{2}”。</p>
+<p>重复次数可以是开区间</p>
+<ul>
+<li>a{1,} 表示匹配a至少出现一次的字符串</li>
+<li>.{0,} 表示匹配任意内容，即使是空字符串，这个表达式也会匹配全文并返回结果</li>
+</ul>
+<h3 id="练习-5"><a href="#练习-5" class="headerlink" title="练习"></a><strong>练习</strong></h3><h4 id="T1"><a href="#T1" class="headerlink" title="T1"></a><strong>T1</strong></h4><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>wazzzzzup</td>
+</tr>
+<tr>
+<td>匹配</td>
+<td>wazzzup</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>wazup</td>
+</tr>
+</tbody></table>
+<h4 id="T2"><a href="#T2" class="headerlink" title="T2"></a><strong>T2</strong></h4><p>使用正则表达式找到双引号，要求输入字符串可能包含任意个字符。</p>
+<p>改进表达式，使得两个双引号中间不能含其它的双引号。</p>
+<h3 id="样例解-4"><a href="#样例解-4" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><h4 id="T1-1"><a href="#T1-1" class="headerlink" title="T1"></a><strong>T1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">waz&#123;2,5&#125;up</span><br></pre></td></tr></table></figure>
+
+<h4 id="T2-1"><a href="#T2-1" class="headerlink" title="T2"></a><strong>T2</strong></h4><p><code>&quot;.&#123;0,&#125;&quot;</code>    改进后  <code>&quot;[^&quot;&#123;0,&#125;]&quot;</code></p>
+<h2 id="关于重复的元字符"><a href="#关于重复的元字符" class="headerlink" title="关于重复的元字符"></a><strong>关于重复的元字符</strong></h2><ul>
+<li>* 与{0,}相同。比如.*表示匹配任意内容</li>
+<li>? 与{0,1}相同。比如colou?r表示匹配color或者colour</li>
+<li>+ 与{1,}相同。比如\w+表示匹配一个单词，比如Account_name_1</li>
+</ul>
+<p>如果需要匹配元字符本身，那么也是需要在它前面加上转移符号。</p>
+<h3 id="练习-6"><a href="#练习-6" class="headerlink" title="练习"></a><strong>练习</strong></h3><p>简化正则表达式：</p>
+<ul>
+<li>“.{0,}”</li>
+<li>x?x?x?</li>
+<li>y*y*</li>
+</ul>
+<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a><strong>解答</strong></h3><ul>
+<li>“.*”</li>
+<li>x{0,3}</li>
+<li>y*</li>
+</ul>
+<h2 id="开始与结束"><a href="#开始与结束" class="headerlink" title="开始与结束"></a><strong>开始与结束</strong></h2><p>到目前为止，我们的正则表达式都是部分匹配文本中的片段。有时候这并非我们所求。比如说要在日志文件中匹配”success”，我们不希望匹配到诸如”Error: unsuccessful operation”的片段。因此我们希望自己写的正则表达式越精确越好。</p>
+<p>使表达式更加精确的一种方法是使用特定的元字符^与<code>$</code>描述一行的开始与结束。举个例子，上一段中，我们可以用 ^success 来匹配一行以success开头的文本。</p>
+<p>注意^ 与[^ ] 不一样，有时容易造成混淆。</p>
+<h3 id="练习-7"><a href="#练习-7" class="headerlink" title="练习"></a><strong>练习</strong></h3><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>文本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>匹配</td>
+<td>Mission: successful</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>Last Mission: unsuccessful</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>Next Mission: successful upon capture of target</td>
+</tr>
+</tbody></table>
+<h3 id="样例解答-1"><a href="#样例解答-1" class="headerlink" title="样例解答"></a><strong>样例解答</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Mission: successful$</span><br></pre></td></tr></table></figure>
+
+<h2 id="捕获"><a href="#捕获" class="headerlink" title="捕获"></a><strong>捕获</strong></h2><p>正则表达式不仅可以匹配文本，同时能够从中提取信息以供进一步处理。假如正则表达式是一个小型计算机程序，那么捕获子串就是它输出的一部分。在表达式中，我们用括号括起来需要捕获的文本。</p>
+<p>比如你需要处理文件夹所有文件中的图片，可以用<code>^(IMG\d+\\.png)$</code> 捕获并提取完整文件名，但是如果你只想提取文件名不需要扩展名，那么可以使用 <code>^(IMG\d+)\.png$</code>​ 捕获文件名。</p>
+<p>如果有括号套括号的情况，那么捕获组对左括号计数。</p>
+<p>假设有这样的正则表达式：(\w+) had a ((\w+) \w+) </p>
+<p>输入的内容是：I had a nice day  </p>
+<ul>
+<li>捕获组1：I</li>
+<li>捕获组2：nice day</li>
+<li>捕获组3：nice</li>
+</ul>
+<h3 id="练习-8"><a href="#练习-8" class="headerlink" title="练习"></a><strong>练习</strong></h3><h4 id="T1-2"><a href="#T1-2" class="headerlink" title="T1"></a><strong>T1</strong></h4><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>文本</th>
+<th>捕获</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>捕获</td>
+<td>file_record_transcript.pdf</td>
+<td>file_record_transcript</td>
+</tr>
+<tr>
+<td>捕获</td>
+<td>file_07241999.pdf</td>
+<td>file_07241999</td>
+</tr>
+<tr>
+<td>忽略</td>
+<td>testfile_fake.pdf.tmp</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="T2-2"><a href="#T2-2" class="headerlink" title="T2"></a><strong>T2</strong></h4><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>文本</th>
+<th>捕获</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>捕获</td>
+<td>Jan 1987</td>
+<td>Jan 1987        1987</td>
+</tr>
+<tr>
+<td>捕获</td>
+<td>May 1969</td>
+<td>May 1969        1969</td>
+</tr>
+<tr>
+<td>捕获</td>
+<td>Aug 2011</td>
+<td>Aug 2011        2011</td>
+</tr>
+</tbody></table>
+<h3 id="样例解-5"><a href="#样例解-5" class="headerlink" title="样例解"></a><strong>样例解</strong></h3><h4 id="T1-3"><a href="#T1-3" class="headerlink" title="T1"></a><strong>T1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^(file.+)\.pdf$</span><br></pre></td></tr></table></figure>
+
+<h4 id="T2-3"><a href="#T2-3" class="headerlink" title="T2"></a><strong>T2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(\w+ (\d+))</span><br></pre></td></tr></table></figure>
+
+<h3 id="更多内容"><a href="#更多内容" class="headerlink" title="更多内容"></a><strong>更多内容</strong></h3><p>之前遇到的元字符，包括星号*，加号+，数量范围{m,n}等，都可以用在捕获组之中或用来修饰捕获组。</p>
+<p>比如说，我们要判断座机电话合法性，不确定是否会在开头加上区号，正确的表达式会用<code>(\d&#123;3&#125;)?</code>来判断区号是否存在。</p>
+<h2 id="选择匹配"><a href="#选择匹配" class="headerlink" title="选择匹配"></a><strong>选择匹配</strong></h2><p>为了表示匹配的不同选择，可以使用 | 符号。比如”Buy more (milk|bread|cookies).” 表示匹配”Buy more milk.” “Buy more bread.” “Buy more cookies.”中的一个。</p>
+<p>我们可以在选项中使用元字符，比如([cb]ats*|[dh]ogs?)会匹配cats或者bats，或者dogs或hogs。</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a><strong>结束</strong></h2><p>目前接触到的基本语法就这些，至于正则表达式在python中的使用方法，等以后用到再总结吧。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>正则表达式（Regular expression）</p><p><a href="http://leoljl.github.io/2021/05/09/regex/">http://leoljl.github.io/2021/05/09/regex/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Leo.L</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-05-09</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2021-05-09</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><hr style="height:1px;margin:1rem 0"><div class="level is-mobile is-flex"></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/04/25/README/"><span class="level-item">README</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/photo.jpg" alt="Leo.L"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Leo.L</p><p class="is-size-6 is-block">Undergrad@XiDian University</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Xi&#039;an, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/LeoLjl" target="_blank" rel="noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#字符"><span class="level-left"><span class="level-item">1</span><span class="level-item">字符</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">样例解</span></span></a></li></ul></li><li><a class="level is-mobile" href="#数字"><span class="level-left"><span class="level-item">2</span><span class="level-item">数字</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-1"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解-1"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">样例解</span></span></a></li></ul></li><li><a class="level is-mobile" href="#点-“-”"><span class="level-left"><span class="level-item">3</span><span class="level-item">点 “.”</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-2"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解-2"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">样例解</span></span></a></li></ul></li><li><a class="level is-mobile" href="#字符类"><span class="level-left"><span class="level-item">4</span><span class="level-item">字符类</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#字符类-1"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">字符类</span></span></a></li><li><a class="level is-mobile" href="#字符类的范围"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">字符类的范围</span></span></a></li><li><a class="level is-mobile" href="#字符类的排除"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">字符类的排除</span></span></a></li><li><a class="level is-mobile" href="#练习-3"><span class="level-left"><span class="level-item">4.4</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解答"><span class="level-left"><span class="level-item">4.5</span><span class="level-item">样例解答</span></span></a></li></ul></li><li><a class="level is-mobile" href="#转义字符类"><span class="level-left"><span class="level-item">5</span><span class="level-item">转义字符类</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-4"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解-3"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">样例解</span></span></a></li></ul></li><li><a class="level is-mobile" href="#重复"><span class="level-left"><span class="level-item">6</span><span class="level-item">重复</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-5"><span class="level-left"><span class="level-item">6.1</span><span class="level-item">练习</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#T1"><span class="level-left"><span class="level-item">6.1.1</span><span class="level-item">T1</span></span></a></li><li><a class="level is-mobile" href="#T2"><span class="level-left"><span class="level-item">6.1.2</span><span class="level-item">T2</span></span></a></li></ul></li><li><a class="level is-mobile" href="#样例解-4"><span class="level-left"><span class="level-item">6.2</span><span class="level-item">样例解</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#T1-1"><span class="level-left"><span class="level-item">6.2.1</span><span class="level-item">T1</span></span></a></li><li><a class="level is-mobile" href="#T2-1"><span class="level-left"><span class="level-item">6.2.2</span><span class="level-item">T2</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#关于重复的元字符"><span class="level-left"><span class="level-item">7</span><span class="level-item">关于重复的元字符</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-6"><span class="level-left"><span class="level-item">7.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#解答"><span class="level-left"><span class="level-item">7.2</span><span class="level-item">解答</span></span></a></li></ul></li><li><a class="level is-mobile" href="#开始与结束"><span class="level-left"><span class="level-item">8</span><span class="level-item">开始与结束</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-7"><span class="level-left"><span class="level-item">8.1</span><span class="level-item">练习</span></span></a></li><li><a class="level is-mobile" href="#样例解答-1"><span class="level-left"><span class="level-item">8.2</span><span class="level-item">样例解答</span></span></a></li></ul></li><li><a class="level is-mobile" href="#捕获"><span class="level-left"><span class="level-item">9</span><span class="level-item">捕获</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#练习-8"><span class="level-left"><span class="level-item">9.1</span><span class="level-item">练习</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#T1-2"><span class="level-left"><span class="level-item">9.1.1</span><span class="level-item">T1</span></span></a></li><li><a class="level is-mobile" href="#T2-2"><span class="level-left"><span class="level-item">9.1.2</span><span class="level-item">T2</span></span></a></li></ul></li><li><a class="level is-mobile" href="#样例解-5"><span class="level-left"><span class="level-item">9.2</span><span class="level-item">样例解</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#T1-3"><span class="level-left"><span class="level-item">9.2.1</span><span class="level-item">T1</span></span></a></li><li><a class="level is-mobile" href="#T2-3"><span class="level-left"><span class="level-item">9.2.2</span><span class="level-item">T2</span></span></a></li></ul></li><li><a class="level is-mobile" href="#更多内容"><span class="level-left"><span class="level-item">9.3</span><span class="level-item">更多内容</span></span></a></li></ul></li><li><a class="level is-mobile" href="#选择匹配"><span class="level-left"><span class="level-item">10</span><span class="level-item">选择匹配</span></span></a></li><li><a class="level is-mobile" href="#结束"><span class="level-left"><span class="level-item">11</span><span class="level-item">结束</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://levitate-qian.github.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">钱佬博客</span></span><span class="level-right"><span class="level-item tag">levitate-qian.github.io</span></span></a></li><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2021/05/"><span class="level-start"><span class="level-item">May 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/04/"><span class="level-start"><span class="level-item">April 2021</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/demo/"><span class="tag">demo</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/tutorial/"><span class="tag">tutorial</span><span class="tag">1</span></a></div></div></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-09T09:54:24.000Z">2021-05-09</time></p><p class="title"><a href="/2021/05/09/regex/">正则表达式（Regular expression）</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-04-25T15:44:19.000Z">2021-04-25</time></p><p class="title"><a href="/2021/04/25/README/">README</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-04-25T10:43:19.000Z">2021-04-25</time></p><p class="title"><a href="/2021/04/25/code-demo/">code-demo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-04-25T10:40:21.000Z">2021-04-25</time></p><p class="title"><a href="/2021/04/25/math-demo/">math-demo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-04-25T09:52:05.962Z">2021-04-25</time></p><p class="title"><a href="/2021/04/25/hello-world/">Hello World</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/avatar.png" alt="嘉嘉小站" height="28"></a><p class="is-size-7"><span>&copy; 2021 Leo.L</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><i class="fab fa-creative-commons"></i> <i class="fab fa-creative-commons-by"></i> <i class="fab fa-creative-commons-nc"></i> <i class="fab fa-creative-commons-sa"></i> </a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="My GitHub" href="https://www.github.com/LeoLjl"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
